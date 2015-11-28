@@ -18,6 +18,7 @@ class BigNumber{
 		/*Type of data*/
 		vector <int> number;
 		int sign;
+		bool min_sign;
 
 		/*functions*/
 		BigNumber _Plus(BigNumber);
@@ -33,11 +34,13 @@ BigNumber::BigNumber(){
 	sign = 1;
 	number.resize(1);
 	number[0] = 0;
+	min_sign = false;
 }
 
 BigNumber::BigNumber(string temp){
 	int index = 0;
 	sign = 1;
+	min_sign = false;
 	if(temp[0] == '-'){
 		sign = -1;
 		index = 1;
@@ -77,6 +80,7 @@ BigNumber BigNumber::_Plus(BigNumber temp){
 				res.number[i] = sign * number[i] + temp.number[i] * temp.sign;
 			}
 		}
+		min_sign = 1;
 	}
 	/*if first number == second number*/
 	else {
@@ -113,6 +117,7 @@ BigNumber BigNumber::_Minus(BigNumber temp){
 				}
 				res.number[i] = temp.number[i] * temp.sign - sign * number[i];
 			}
+			res.min_sign = true;
 		}
 	}
 	/*if first number == second number*/
@@ -160,6 +165,8 @@ int mod10(int num){
 	return num - 10 * div10(num);
 }
 
+
+
 void BigNumber::_Reverse(){
 	for(int i = 0; i < number.size() - 1; i++){
 		number[i + 1] += div10(number[i]);
@@ -192,6 +199,8 @@ string BigNumber::ToStr(){
 	string str = "";
 	if(sign == -1)
 		str = '-';
+	if (min_sign)
+		str += '-';
 	for(int i = 0; i < number.size(); i++){
 		str += number[number.size() - i - 1] + '0';
 	}
