@@ -90,12 +90,37 @@ BigNumber BigNumber::_Plus(BigNumber temp){
 
 BigNumber BigNumber::_Minus(BigNumber temp){
 	BigNumber res;
-	if (number.size() != temp.number.size())
-		return res;
-	else
+	/*if first number != second number*/
+	if (number.size() != temp.number.size()){
+		/*case 1 : if first number > second number*/
+		if (number.size() > temp.number.size()){
+			res.number.resize(number.size());
+			for (int i(0); i < res.number.size(); i++){
+				if (temp.number.size() - 1 < i){
+					res.number[i] = sign * number[i];
+					continue;
+				}
+				res.number[i] = sign * number[i] - temp.number[i] * temp.sign;
+			}
+		}
+		/*case 2 : if first number < second number*/
+		else {
+			res.number.resize(temp.number.size());
+			for (int i(0); i < res.number.size(); i++){
+				if (number.size() - 1 < i){
+					res.number[i] = sign * temp.number[i];
+					continue;
+				}
+				res.number[i] = temp.number[i] * temp.sign - sign * number[i];
+			}
+		}
+	}
+	/*if first number == second number*/
+	else {
 		res.number.resize(number.size());
-	for (int i(0); i < res.number.size(); i++){
-		res.number[i] = sign * number[i] - temp.number[i] * temp.sign;
+		for (int i(0); i < res.number.size(); i++){
+			res.number[i] = sign * number[i] - temp.number[i] * temp.sign;
+		}
 	}
 	return res;
 }
