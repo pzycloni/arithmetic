@@ -132,13 +132,20 @@ BigNumber BigNumber::_Minus(BigNumber temp){
 
 BigNumber BigNumber::_Multi(BigNumber temp){
 	BigNumber res;
-	if (number.size() != temp.number.size())
-		return res;
+	if (number.size() != temp.number.size()){
+
+		if (number.size() > temp.number.size())
+			temp.number.resize(number.size());
+		else
+			number.resize(temp.number.size());
+
+		res.number.resize(number.size() + temp.number.size());
+	}
 	else
 		res.number.resize(2 * number.size());
 	for (int i(0); i < number.size(); i++){
 		for (int j(0); j < temp.number.size(); j++)
-			res.number[i+j] += number[i] * temp.number[i];
+			res.number[i+j] += number[j] * temp.number[i];
 	}
 	res.sign = sign * temp.sign;
 	return res;
